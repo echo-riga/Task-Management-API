@@ -1,7 +1,24 @@
 Task Management API
 
-A simple Task Management API built with Node.js, Express, TypeScript, PostgreSQL, and Knex.
-The project supports two storage options: a local JSON file or PostgreSQL. The active datasource is selected through an environment variable.
+A Task Management API built using:
+
+Node.js
+
+Express
+
+TypeScript (strict mode)
+
+PostgreSQL
+
+Knex.js
+
+It supports two storage options:
+
+Local JSON file
+
+PostgreSQL database
+
+The active datasource is selected using an environment variable.
 
 Table of Contents
 
@@ -13,13 +30,13 @@ Data Model
 
 Data Sources
 
-Environment Setup
+Setup
 
-Running the Application
+Running the App
 
-Database Migrations
+Migrations
 
-Seeding Data
+Seeding
 
 Architecture
 
@@ -27,68 +44,69 @@ Notes
 
 Features
 
-CRUD API for tasks
+CRUD operations for tasks
 
-Dual persistence layer:
+Dual persistence (JSON or PostgreSQL)
 
-Local JSON file
+Strict TypeScript typing across the entire codebase
 
-PostgreSQL via Knex
-
-Strict TypeScript typing (models, DTOs, repository interfaces)
-
-Knex migrations for database schema
+Knex migrations for PostgreSQL schema
 
 Seed data from a public API
 
 API Endpoints
-Method Endpoint Description
-GET /tasks Get all tasks
-GET /tasks/:id Get a task by id
-POST /tasks Create a new task
-PUT /tasks/:id Update a task
-DELETE /tasks/:id Delete a task
+GET     /tasks
+GET     /tasks/:id
+POST    /tasks
+PUT     /tasks/:id
+DELETE  /tasks/:id
+
 Data Model
 Task
 type Task = {
-id: number;
-userId: number;
-title: string;
-completed: boolean;
+  id: number;
+  userId: number;
+  title: string;
+  completed: boolean;
 }
 
 DTOs
 type TaskCreateDto = {
-userId: number;
-title: string;
-completed?: boolean;
+  userId: number;
+  title: string;
+  completed?: boolean;
 }
 
 type TaskUpdateDto = {
-title?: string;
-completed?: boolean;
+  title?: string;
+  completed?: boolean;
 }
 
 Data Sources
-JSON (Local File)
+JSON (Local file)
 
-Saves data to data/tasks.json
+Data saved in data/tasks.json
 
-Persists across server restarts
+Data persists across restarts
 
-Matches behavior of PostgreSQL implementation
+Behavior matches PostgreSQL implementation
 
 PostgreSQL (Database)
 
 Uses Knex for all queries
 
-Requires migration to create schema
+Requires migration to create tables
 
-Configured through environment variables
+Setup
 
-Environment Setup
+Install dependencies
 
-Create your own .env file (no .env.example included intentionally):
+npm install
+
+
+Create your own .env file
+
+Example:
 
 PORT=3000
 DATASOURCE=postgres
@@ -98,27 +116,18 @@ DB_PORT=5432
 DB_USER=postgres
 DB_NAME=tasks_db
 
-DATASOURCE values:
 
-json
+.env.example is not included intentionally. You can set your own values.
 
-postgres
-
-Running the Application
-
-Install dependencies:
-
-npm install
-
-Start server:
-
+Running the App
 npm start
 
-Database Migrations
+Migrations (Postgres)
 
-Run migrations (Postgres):
+Run migrations:
 
 npm run migrate
+
 
 Rollback:
 
@@ -126,7 +135,7 @@ npm run migrate:rollback
 
 Seeding Data
 
-The seed script fetches 10 tasks from the public API:
+Seed fetches 10 tasks from:
 
 https://jsonplaceholder.typicode.com/todos
 
@@ -134,22 +143,23 @@ Run:
 
 npm run seed
 
-Note: Seed will only run if the datasource is empty.
+
+The seed script only runs if the datasource is empty.
 
 Architecture
-Controller → Service → Repository → Data Source
+Controller -> Service -> Repository -> Data Source
 
-Controllers handle HTTP requests and validation
 
-Services contain business logic
+Controller: handles HTTP requests and validation
 
-Repositories handle persistence
+Service: business logic
 
-Factory selects the correct repository based on DATASOURCE
+Repository: data persistence
+
+Factory: selects JSON or Postgres repository based on DATASOURCE
 
 Notes
 
-JSON and PostgreSQL data are not automatically synced.
-The system only uses the selected datasource.
+JSON and PostgreSQL are not synced automatically.
 
-Seed is designed to run only once (when datasource is empty).
+The app only uses the datasource selected in .env.
