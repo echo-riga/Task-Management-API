@@ -9,8 +9,7 @@ A task management system that lets you switch between two ways of storing data: 
 - **Switch storage easily** - Use a database or a simple file
 - **Full task operations** - Create, read, update, delete tasks
 - **Type safety** - Built with TypeScript to catch errors early
-- **Ready for production** - Clean code structure that scales
-- **Automatic data loading** - Start with sample tasks if needed
+- **Automatic data loading** - Start with sample tasks if using npm run seed if needed
 
 ---
 
