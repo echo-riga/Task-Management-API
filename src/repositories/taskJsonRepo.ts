@@ -10,10 +10,14 @@ function readData(): Task[] {
   if (!fs.existsSync(DATA_FILE)) {
     fs.writeFileSync(DATA_FILE, JSON.stringify([]));
   }
-  const raw = fs.readFileSync(DATA_FILE, "utf-8");
+
+  const raw = fs.readFileSync(DATA_FILE, "utf-8").trim();
+
+  // If file is empty, return empty array
+  if (!raw) return [];
+
   return JSON.parse(raw) as Task[];
 }
-
 function writeData(data: Task[]) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
