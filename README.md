@@ -1,164 +1,183 @@
 # Task Management API
 
-## Overview
-A production-ready Task Management API built with Node.js, Express, and TypeScript, featuring dual persistence options for flexibility in development and deployment environments.
+## What is this?
+A task management system that lets you switch between two ways of storing data: a real database (PostgreSQL) or a simple file (JSON). Built with Node.js and TypeScript.
 
 ---
 
-## Features
-- Complete CRUD operations for task management
-- Configurable data sources (PostgreSQL or JSON file)
-- Strict TypeScript typing across entire codebase
-- Database migrations with Knex.js
-- Seed data from public APIs
-- RESTful API design
+## Main Features
+- **Switch storage easily** - Use a database or a simple file
+- **Full task operations** - Create, read, update, delete tasks
+- **Type safety** - Built with TypeScript to catch errors early
+- **Ready for production** - Clean code structure that scales
+- **Automatic data loading** - Start with sample tasks if needed
 
 ---
 
-## Technology Stack
-| Component | Technology |
-|-----------|------------|
-| Backend | Node.js, Express |
-| Language | TypeScript (strict mode) |
-| Database | PostgreSQL |
-| Query Builder | Knex.js |
-| Persistence | PostgreSQL or JSON file |
+## Quick Start Guide
 
----
-
-## API Endpoints
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/tasks` | Retrieve all tasks |
-| GET | `/tasks/:id` | Retrieve specific task |
-| POST | `/tasks` | Create new task |
-| PUT | `/tasks/:id` | Update existing task |
-| DELETE | `/tasks/:id` | Delete task |
-
----
-
-## Data Models
-
-### Task Entity
-```typescript
-type Task = {
-  id: number;
-  userId: number;
-  title: string;
-  completed: boolean;
-}
-```
-
-### Task Creation DTO
-```typescript
-type TaskCreateDto = {
-  userId: number;
-  title: string;
-  completed?: boolean;
-}
-```
-
-### Task Update DTO
-```typescript
-type TaskUpdateDto = {
-  title?: string;
-  completed?: boolean;
-}
-```
-
----
-
-## Quick Start
-
-### 1. Installation
+### 1. Install
 ```bash
 npm install
 ```
 
-### 2. Configuration
-Create a `.env` file:
+### 2. Setup
+Create a file called `.env` in the project folder:
+
+**Option A: Use PostgreSQL (recommended for real use)**
 ```env
 PORT=3000
-DATASOURCE=postgres  # or 'json'
-
-# PostgreSQL Configuration
+DATASOURCE=postgres
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
-DB_PASSWORD=your_password
+DB_PASSWORD=yourpassword
 DB_NAME=tasks_db
 ```
 
-### 3. Run Application
+**Option B: Use simple file storage (good for testing)**
+```env
+PORT=3000
+DATASOURCE=json
+```
+
+### 3. Run
 ```bash
 npm start
+```
+Your API will be ready at: `http://localhost:3000`
+
+---
+
+## How to Use the API
+
+### Get all tasks
+```bash
+GET http://localhost:3000/tasks
+```
+
+### Get one task
+```bash
+GET http://localhost:3000/tasks/1
+```
+
+### Create a task
+```bash
+POST http://localhost:3000/tasks
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "title": "Buy groceries",
+  "completed": false
+}
+```
+
+### Update a task
+```bash
+PUT http://localhost:3000/tasks/1
+Content-Type: application/json
+
+{
+  "title": "Buy groceries and cook dinner",
+  "completed": true
+}
+```
+
+### Delete a task
+```bash
+DELETE http://localhost:3000/tasks/1
 ```
 
 ---
 
-## Database Operations
+## Setting Up the Database
 
-### Migrations
+If you chose PostgreSQL:
+
+### 1. Create the database
 ```bash
-# Run migrations
-npm run migrate
-
-# Rollback migrations
-npm run migrate:rollback
+createdb tasks_db
 ```
 
-### Seeding
+### 2. Run migrations (creates the tables)
 ```bash
-# Seed database with sample data
+npm run migrate
+```
+
+### 3. Add sample data (optional)
+```bash
 npm run seed
 ```
-*Seed data is fetched from: https://jsonplaceholder.typicode.com/todos*
+*This adds 10 sample tasks to get you started*
 
 ---
 
-## Architecture
-```
-Controller → Service → Repository → Data Source
-```
+## Switching Between Storage Options
 
-- **Controller**: HTTP request handling and validation
-- **Service**: Business logic layer
-- **Repository**: Data persistence operations
-- **Data Source**: PostgreSQL or JSON file (selected via DATASOURCE)
+### Using PostgreSQL (Database)
+- Good for multiple users
+- Data stays safe
+- Can handle lots of tasks
+- Set `DATASOURCE=postgres` in `.env`
 
----
-
-## Configuration Notes
-- Data source selection is controlled by the `DATASOURCE` environment variable
-- PostgreSQL and JSON data sources are not automatically synchronized
-- The application uses only the configured data source
-- Strict TypeScript validation is enforced throughout the codebase
-
----
-
-## Development
-```bash
-# Development mode with hot reload
-npm run dev
-
-# Build TypeScript
-npm run build
-
-# Production start
-npm start
-```
+### Using JSON File
+- Simple to set up
+- No database needed
+- Good for testing
+- Set `DATASOURCE=json` in `.env`
+- Tasks are saved in `data/tasks.json`
 
 ---
 
 ## Project Structure
 ```
 src/
-├── controllers/
-├── services/
-├── repositories/
-├── models/
-├── data/
-├── migrations/
-├── seeds/
-└── config/
+├── controllers/      # Handles web requests
+├── services/        # Business logic
+├── repositories/    # Saves/reads data
+├── models/         # Data types
+├── data/          # JSON file storage
+├── migrations/    # Database setup
+└── seeds/        # Sample data
 ```
+
+---
+
+## Development Commands
+
+```bash
+# Run in development mode
+npm run dev
+
+# Build the project
+npm run build
+
+# Run tests
+npm test
+
+# Reset database
+npm run migrate:rollback
+npm run migrate
+```
+
+---
+
+## Important Notes
+
+1. **Choose one storage option** - Your `.env` file decides if you use database or file
+2. **Data doesn't sync** - Tasks in database won't automatically appear in JSON file
+3. **Start with sample data** - Use `npm run seed` to get sample tasks
+4. **Switch anytime** - Change `.env` and restart to switch storage
+
+---
+
+## Need Help?
+
+Check if:
+- Your `.env` file is in the right place
+- PostgreSQL is running (if using database)
+- The port 3000 is free
+- You've run `npm install` first
+
+The API is now ready at `http://localhost:3000`
