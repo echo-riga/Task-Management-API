@@ -1,191 +1,164 @@
-Task Management API
-A production-ready Task Management API built with Node.js, Express, and TypeScript, featuring dual persistence options for flexibility in development and deployment.
+# Task Management API
 
-Table of Contents
-Technology Stack
+## Overview
+A production-ready Task Management API built with Node.js, Express, and TypeScript, featuring dual persistence options for flexibility in development and deployment environments.
 
-Features
+---
 
-API Endpoints
+## Features
+- Complete CRUD operations for task management
+- Configurable data sources (PostgreSQL or JSON file)
+- Strict TypeScript typing across entire codebase
+- Database migrations with Knex.js
+- Seed data from public APIs
+- RESTful API design
 
-Data Models
+---
 
-Architecture
+## Technology Stack
+| Component | Technology |
+|-----------|------------|
+| Backend | Node.js, Express |
+| Language | TypeScript (strict mode) |
+| Database | PostgreSQL |
+| Query Builder | Knex.js |
+| Persistence | PostgreSQL or JSON file |
 
-Setup and Installation
+---
 
-Running the Application
+## API Endpoints
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/tasks` | Retrieve all tasks |
+| GET | `/tasks/:id` | Retrieve specific task |
+| POST | `/tasks` | Create new task |
+| PUT | `/tasks/:id` | Update existing task |
+| DELETE | `/tasks/:id` | Delete task |
 
-Database Operations
+---
 
-Project Structure
+## Data Models
 
-Configuration
-
-Technology Stack
-Runtime: Node.js
-
-Framework: Express.js
-
-Language: TypeScript (strict mode)
-
-Database: PostgreSQL
-
-ORM/Query Builder: Knex.js
-
-Persistence Options: PostgreSQL or Local JSON file
-
-Features
-Complete CRUD operations for task management
-
-Configurable data source (PostgreSQL or JSON file)
-
-Type-safe development with strict TypeScript configuration
-
-Database migrations and seeding
-
-RESTful API design
-
-Scalable service-repository architecture
-
-API Endpoints
-Method	Endpoint	Description
-GET	/tasks	Retrieve all tasks
-GET	/tasks/:id	Retrieve a specific task
-POST	/tasks	Create a new task
-PUT	/tasks/:id	Update an existing task
-DELETE	/tasks/:id	Delete a task
-Data Models
-Task Entity
-typescript
-interface Task {
+### Task Entity
+```typescript
+type Task = {
   id: number;
   userId: number;
   title: string;
   completed: boolean;
 }
-Data Transfer Objects
-Task Creation DTO
-typescript
-interface TaskCreateDto {
+```
+
+### Task Creation DTO
+```typescript
+type TaskCreateDto = {
   userId: number;
   title: string;
-  completed?: boolean;  // Optional, defaults to false
+  completed?: boolean;
 }
-Task Update DTO
-typescript
-interface TaskUpdateDto {
+```
+
+### Task Update DTO
+```typescript
+type TaskUpdateDto = {
   title?: string;
   completed?: boolean;
 }
-Architecture
-The application follows a layered architecture pattern:
+```
 
-text
-Controller → Service → Repository → Data Source
-Controller: Handles HTTP requests, validation, and response formatting
+---
 
-Service: Contains business logic and use cases
+## Quick Start
 
-Repository: Manages data persistence operations
-
-Factory Pattern: Dynamically selects JSON or PostgreSQL repository based on configuration
-
-Setup and Installation
-Prerequisites
-Node.js (v14 or higher)
-
-PostgreSQL (optional, if using database)
-
-npm or yarn package manager
-
-Installation Steps
-Clone and install dependencies
-
-bash
+### 1. Installation
+```bash
 npm install
-Configure environment variables
-Create a .env file in the project root:
+```
 
-env
+### 2. Configuration
+Create a `.env` file:
+```env
 PORT=3000
-DATASOURCE=postgres  # or 'json' for local file storage
+DATASOURCE=postgres  # or 'json'
 
-# PostgreSQL configuration (required if DATASOURCE=postgres)
+# PostgreSQL Configuration
 DB_HOST=localhost
 DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=your_password
 DB_NAME=tasks_db
-Database setup (if using PostgreSQL)
+```
 
-bash
-# Create the database
-createdb tasks_db
-Running the Application
-Development Mode
-bash
-npm run dev
-Production Mode
-bash
+### 3. Run Application
+```bash
 npm start
-The application will be available at http://localhost:3000 (or your configured port).
+```
 
-Database Operations
-Migrations
-Run database migrations to create necessary tables:
+---
 
-bash
+## Database Operations
+
+### Migrations
+```bash
+# Run migrations
 npm run migrate
-Rollback migrations if needed:
 
-bash
+# Rollback migrations
 npm run migrate:rollback
-Seeding
-Populate the database with sample data from a public API:
+```
 
-bash
+### Seeding
+```bash
+# Seed database with sample data
 npm run seed
-The seed script fetches 10 sample tasks from https://jsonplaceholder.typicode.com/todos and only runs if the selected data source is empty.
+```
+*Seed data is fetched from: https://jsonplaceholder.typicode.com/todos*
 
-Project Structure
-text
+---
+
+## Architecture
+```
+Controller → Service → Repository → Data Source
+```
+
+- **Controller**: HTTP request handling and validation
+- **Service**: Business logic layer
+- **Repository**: Data persistence operations
+- **Data Source**: PostgreSQL or JSON file (selected via DATASOURCE)
+
+---
+
+## Configuration Notes
+- Data source selection is controlled by the `DATASOURCE` environment variable
+- PostgreSQL and JSON data sources are not automatically synchronized
+- The application uses only the configured data source
+- Strict TypeScript validation is enforced throughout the codebase
+
+---
+
+## Development
+```bash
+# Development mode with hot reload
+npm run dev
+
+# Build TypeScript
+npm run build
+
+# Production start
+npm start
+```
+
+---
+
+## Project Structure
+```
 src/
-├── controllers/     # HTTP request handlers
-├── services/       # Business logic layer
-├── repositories/   # Data access layer
-├── models/         # TypeScript interfaces and types
-├── data/           # JSON file storage (if used)
-├── migrations/     # Database schema migrations
-├── seeds/         # Database seed files
-└── config/        # Configuration and factory patterns
-Configuration
-Data Source Selection
-The application supports two persistence options, selected via the DATASOURCE environment variable:
-
-PostgreSQL (DATASOURCE=postgres)
-
-Full database capabilities
-
-ACID compliance
-
-Suitable for production
-
-Local JSON file (DATASOURCE=json)
-
-File-based storage in data/tasks.json
-
-Data persists across application restarts
-
-Identical API behavior to PostgreSQL
-
-Ideal for development and testing
-
-Important Notes
-The JSON and PostgreSQL data sources are not automatically synchronized
-
-The application uses only the data source specified in the environment configuration
-
-Switching data sources requires appropriate configuration and data migration
-
-All TypeScript files are compiled with strict type checking enabled
+├── controllers/
+├── services/
+├── repositories/
+├── models/
+├── data/
+├── migrations/
+├── seeds/
+└── config/
+```
