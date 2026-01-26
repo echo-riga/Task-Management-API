@@ -1,11 +1,5 @@
 [
   {
-    "id": 1,
-    "userId": 1,
-    "title": "delectus aut autem",
-    "completed": false
-  },
-  {
     "id": 2,
     "userId": 1,
     "title": "quis ut nam facilis et officia qui",
